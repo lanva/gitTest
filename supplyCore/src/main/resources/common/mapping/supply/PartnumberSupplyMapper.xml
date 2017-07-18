@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sekorm.core.dao.supply.PartnumberSupplyMapper" >
+  <resultMap id="BaseResultMap" type="com.sekorm.core.model.supply.PartnumberSupply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="erp_id" property="erpId" jdbcType="INTEGER" />
+    <result column="pn_code" property="pnCode" jdbcType="VARCHAR" />
+    <result column="pcs" property="pcs" jdbcType="INTEGER" />
+    <result column="delivery_day" property="deliveryDay" jdbcType="TIMESTAMP" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="product_line" property="productLine" jdbcType="VARCHAR" />
+    <result column="elec" property="elec" jdbcType="VARCHAR" />
+    <result column="elec_branch" property="elecBranch" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="SMALLINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="isDiscount" property="isDiscount" jdbcType="INTEGER" />
+    <result column="batch" property="batch" jdbcType="VARCHAR" />
+    <result column="min_pack_amount" property="minPackAmount" jdbcType="INTEGER" />
+    <result column="min_order_amount" property="minOrderAmount" jdbcType="INTEGER" />
+    <result column="erp_update_time" property="erpUpdateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="VOResultMap" type="com.sekorm.core.vo.supply.PartnumberSupplyVO" extends="BaseResultMap">
+    <result column="elec_promotion" property="elecPromotion" jdbcType="INTEGER" />
+    <result column="pnCodeInDS" property="pnCodeInDS" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  <resultMap id="SupplyFrontVO" type="com.sekorm.core.vo.supply.SupplyForFrontVO">
+    <result column="pn_code" property="pnCode" jdbcType="VARCHAR" />
+    <result column="pcs" property="pcs" jdbcType="INTEGER" />
+    <result column="delivery_day" property="deliveryDay" jdbcType="TIMESTAMP" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+     <result column="isDiscount" property="isDiscount" jdbcType="INTEGER" />
+     <result column="sample_flag" property="sampleFlag" jdbcType="INTEGER" />
+     <result column="batch" property="batch" jdbcType="VARCHAR" />
+    <result column="min_pack_amount" property="minPackAmount" jdbcType="INTEGER" />
+    <result column="min_order_amount" property="minOrderAmount" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, erp_id, pn_code, pcs, delivery_day, brand, product_line, elec, elec_branch, state, 
+    create_time, update_time,batch,min_pack_amount,min_order_amount,erp_update_time
+  </sql>
+   <sql id="SupplyForFront" >
+    id, pn_code, pcs, delivery_day, brand, sample_flag,batch,min_pack_amount,min_order_amount
+  </sql>
+  <sql id="SupplyForFrontForIos" >
+    id, pn_code, pcs, delivery_day, brand, sample_flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_partnumber_supply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_partnumber_supply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sekorm.core.model.supply.PartnumberSupply" >
+    insert into t_partnumber_supply (id, erp_id, pn_code, 
+      pcs, delivery_day, brand, 
+      product_line, elec, elec_branch, 
+      state, create_time, update_time,batch,min_pack_amount,min_order_amount,erp_update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{erpId,jdbcType=INTEGER}, #{pnCode,jdbcType=VARCHAR}, 
+      #{pcs,jdbcType=INTEGER}, #{deliveryDay,jdbcType=TIMESTAMP}, #{brand,jdbcType=VARCHAR}, 
+      #{productLine,jdbcType=VARCHAR}, #{elec,jdbcType=VARCHAR}, #{elecBranch,jdbcType=VARCHAR}, 
+      #{state,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{batch,jdbcType=VARCHAR},#{minPackAmount,jdbcType=INTEGER}, #{minOrderAmount,jdbcType=INTEGER},
+      #{erpUpdateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sekorm.core.model.supply.PartnumberSupply" >
+    insert into t_partnumber_supply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="erpId != null" >
+        erp_id,
+      </if>
+      <if test="pnCode != null" >
+        pn_code,
+      </if>
+      <if test="pcs != null" >
+        pcs,
+      </if>
+      <if test="deliveryDay != null" >
+        delivery_day,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="productLine != null" >
+        product_line,
+      </if>
+      <if test="elec != null" >
+        elec,
+      </if>
+      <if test="elecBranch != null" >
+        elec_branch,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="batch != null" >
+        batch,
+      </if>
+      <if test="min_pack_amount != null" >
+        min_pack_amount,
+      </if>
+      <if test="min_order_amount != null" >
+        min_order_amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="erpId != null" >
+        #{erpId,jdbcType=INTEGER},
+      </if>
+      <if test="pnCode != null" >
+        #{pnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pcs != null" >
+        #{pcs,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryDay != null" >
+        #{deliveryDay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="productLine != null" >
+        #{productLine,jdbcType=VARCHAR},
+      </if>
+      <if test="elec != null" >
+        #{elec,jdbcType=VARCHAR},
+      </if>
+      <if test="elecBranch != null" >
+        #{elecBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="batch != null" >
+        #{batch,jdbcType=VARCHAR},
+      </if>
+      <if test="minPackAmount != null" >
+        #{minPackAmount,jdbcType=INTEGER},
+      </if>
+      <if test="minOrderAmount != null" >
+        #{minOrderAmount,jdbcType=INTEGER},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sekorm.core.model.supply.PartnumberSupply" >
+    update t_partnumber_supply
+    <set >
+      <if test="erpId != null" >
+        erp_id = #{erpId,jdbcType=INTEGER},
+      </if>
+      <if test="pnCode != null" >
+        pn_code = #{pnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pcs != null" >
+        pcs = #{pcs,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryDay != null" >
+        delivery_day = #{deliveryDay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="productLine != null" >
+        product_line = #{productLine,jdbcType=VARCHAR},
+      </if>
+      <if test="elec != null" >
+        elec = #{elec,jdbcType=VARCHAR},
+      </if>
+      <if test="elecBranch != null" >
+        elec_branch = #{elecBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="batch != null" >
+        batch = #{batch,jdbcType=VARCHAR},
+      </if>
+      <if test="minPackAmount != null" >
+        min_pack_amount = #{minPackAmount,jdbcType=INTEGER},
+      </if>
+       <if test="min_order_amount != null" >
+        min_order_amount = #{minOrderAmount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sekorm.core.model.supply.PartnumberSupply" >
+    update t_partnumber_supply
+    set erp_id = #{erpId,jdbcType=INTEGER},
+      pn_code = #{pnCode,jdbcType=VARCHAR},
+      pcs = #{pcs,jdbcType=INTEGER},
+      delivery_day = #{deliveryDay,jdbcType=TIMESTAMP},
+      brand = #{brand,jdbcType=VARCHAR},
+      product_line = #{productLine,jdbcType=VARCHAR},
+      elec = #{elec,jdbcType=VARCHAR},
+      elec_branch = #{elecBranch,jdbcType=VARCHAR},
+      state = #{state,jdbcType=SMALLINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      batch = #{batch,jdbcType=VARCHAR},
+      min_pack_amount = #{minPackAmount,jdbcType=INTEGER},
+      min_order_amount = #{minOrderAmount,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getListByParam" resultMap="SupplyFrontVO">
+  	select <include refid="SupplyForFront" />,
+  	case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+	else 1 end as isDiscount
+	from (
+	    select 
+	    	<include refid="SupplyForFront" />
+	    from t_partnumber_supply s
+	    where state = 0
+	    <if test="param != null" >
+	        and UPPER(pn_code) like #{param}
+	    </if>
+	    <if test="selType != null and selType == 1" >
+	    	AND EXISTS (
+	    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1
+	    	)
+	    </if>
+	    <if test="pnList != null and pnList.size()>0">
+	     union
+	     select 
+		    <include refid="SupplyForFront" />
+	     from t_partnumber_supply s1
+	     where state = 0 and
+	     UPPER(pn_code) in 
+	     	<foreach item="item" index="index" collection="pnList" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+			<if test="selType != null and selType == 1" >
+		    	AND EXISTS (
+		    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s1.pn_code AND e.status = 1
+		    	)
+		    </if>
+	     </if>
+	     order by pcs>0 desc 
+     ) s limit #{page}, #{pageSize}
+  </select>
+  
+  <select id="getListByParamForApp" resultMap="SupplyFrontVO">
+  	select <include refid="SupplyForFront" />,
+  	case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+	else 1 end as isDiscount
+	from (
+	    select 
+	    	<include refid="SupplyForFront" />
+	    from t_partnumber_supply 
+	    where state = 0
+	    <if test="param != null" >
+	        and UPPER(pn_code) like #{param}
+	    </if>
+	    <if test="pnList != null and pnList.size()>0">
+	     union
+	     select 
+		    <include refid="SupplyForFront" />
+	     from t_partnumber_supply
+	     where state = 0 and
+	     UPPER(pn_code) in 
+	     	<foreach item="item" index="index" collection="pnList" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+	     </if>
+	     order by pcs > 0 desc 
+     ) s limit #{page}, #{pageSize}
+  </select>
+  
+  <select id="getListByParamCount" resultType="int">
+	    select count(1)
+		from (
+		    select 
+		    id
+		    from t_partnumber_supply s1
+		    where state = 0
+		    <if test="param != null" >
+		        and UPPER(pn_code) like #{param}
+		    </if>
+		     <if test="selType != null and selType == 1" >
+		    	AND EXISTS (
+		    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s1.pn_code AND e.status = 1
+		    	)
+		     </if>
+		    <if test="pnList != null and pnList.size()>0">
+		     union
+		     select 
+			    id
+		     from t_partnumber_supply s2
+		     where state = 0 and
+		     UPPER(pn_code) in 
+		     	<foreach item="item" index="index" collection="pnList" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+		     </if>
+		     <if test="selType != null and selType == 1" >
+		    	AND EXISTS (
+		    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s2.pn_code AND e.status = 1
+		    	)
+		     </if>
+	     ) s
+  </select>
+  
+  <select id="getByBrand" resultMap="SupplyFrontVO">
+  	select <include refid="SupplyForFront" />,
+  	case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+	else 1 end as isDiscount
+	from (
+	    select 
+	    	<include refid="SupplyForFront" />
+	    from t_partnumber_supply s
+	    where state = 0
+	    <if test="param != null" >
+	        and UPPER(brand) = #{param}
+	    </if>
+	    
+	     <if test="aliasList != null and aliasList.size()>0">
+		       and UPPER(brand) in 
+		     	<foreach item="item" index="index" collection="aliasList" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+		 </if>
+		     
+		     
+	    <if test="selType != null and selType == 1" >
+	    	AND EXISTS (
+	    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1
+	    	)
+	    </if>
+	     order by pcs>0 desc
+     ) s limit #{page}, #{pageSize}
+  </select>
+  
+  <select id="getByBrandCount" resultType="int">
+  	select count(1)
+		from (
+		    select 
+		    id
+		    from t_partnumber_supply s
+		    where state = 0
+		    <if test="param != null" >
+		        and UPPER(brand) = #{param}
+		    </if>
+		     <if test="aliasList != null and aliasList.size()>0">
+		       and UPPER(brand) in 
+		     	<foreach item="item" index="index" collection="aliasList" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+		 </if>
+		    <if test="selType != null and selType == 1" >
+	    	AND EXISTS (
+	    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1
+	    	)
+	    </if>
+	     ) s
+  </select>
+  
+  <select id="getListNoKey" resultMap="SupplyFrontVO">
+	    select 
+	    <include refid="SupplyForFront" />,
+	    case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+		else 1 end as isDiscount
+	    from t_partnumber_supply s
+	    where s.state = 0 AND s.pcs > 0
+	    <if test="selType != null and selType == 1" >
+	    	AND EXISTS (
+	    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1
+	    	)
+	    </if>
+	    order by s.order_index desc, s.brand,s.product_line
+	    limit #{page}, #{pageSize}
+  </select>
+  
+  <select id="getListNoKeyCount" resultType="int">
+	    select 
+	    count(1)
+	    from t_partnumber_supply s
+	    where s.state = 0
+	    <if test="pcs != null" >
+	    	AND s.pcs > #{pcs}
+	    </if>
+	    <if test="selType != null and selType == 1" >
+	    	AND EXISTS (
+	    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1 
+	    	)
+	    </if>
+  </select>
+  
+  <select id="getListNoKeyForApp" resultMap="SupplyFrontVO">
+	    select 
+	   <include refid="SupplyForFront" />,
+	    case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+		else 1 end as isDiscount
+	    from t_partnumber_supply s
+	    where s.state = 0 AND s.pcs > 0
+	    order by s.order_index desc, s.brand,s.product_line
+	    limit #{page}, #{pageSize}
+  </select>
+  
+  
+  <select id="exactQuerySupply" resultMap="SupplyFrontVO">
+	    select 
+	    <include refid="SupplyForFront" />,
+	    case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+		else 1 end as isDiscount
+	    from t_partnumber_supply s
+	    where s.state = 0 AND UPPER(s.pn_code) in 
+	    <foreach item="item" index="index" collection="pnSet" open="("
+				separator="," close=")">
+				UPPER(#{item})
+		</foreach>
+	    order by s.pn_code limit 0,7
+  </select>
+  
+  <select id="exactQuerySupplyPage" resultMap="SupplyFrontVO">
+	    select 
+	    <include refid="SupplyForFront" />,
+	    case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+		else 1 end as isDiscount
+	    from t_partnumber_supply s
+	    where s.state = 0 AND UPPER(s.pn_code) in 
+	    <foreach item="item" index="index" collection="pnSet" open="("
+				separator="," close=")">
+				UPPER(#{item})
+		</foreach>
+		<if test="selType != null and selType == 1" >
+	    	AND EXISTS (
+	    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1
+	    	)
+	    </if>
+	    order by s.pcs>0 desc limit #{page}, #{pageSize}
+  </select>
+  
+  <select id="exactQuerySupplyCount" resultType="int">
+	    select 
+	    count(1)
+	    from t_partnumber_supply s
+	    where s.state = 0 AND UPPER(s.pn_code) in 
+	    <foreach item="item" index="index" collection="pnSet" open="("
+				separator="," close=")">
+				UPPER(#{item})
+		</foreach>
+		<if test="selType != null and selType == 1" >
+	    	AND EXISTS (
+	    		select 1 from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1
+	    	)
+	    </if>
+  </select>
+  <select id="exactQuerySupplyForApp" resultMap="SupplyFrontVO">
+	    select 
+	    <include refid="SupplyForFront" />,
+	    case when (select count(1) from t_elec_promotion_detail d left join t_elec_promotion e on d.batch_id = e.id where d.pn_code = s.pn_code AND e.status = 1) = 0 then 0
+		else 1 end as isDiscount
+	    from t_partnumber_supply s
+	    where s.state = 0 AND UPPER(s.pn_code) in 
+	    <foreach item="item" index="index" collection="pnSet" open="("
+				separator="," close=")">
+				UPPER(#{item})
+		</foreach>
+	    order by s.pcs>0 desc
+  </select>
+  
+  <!-- 元件供应输入框联想 -->
+  <select id="getListForInputPN" resultType="java.lang.String"
+   		parameterType="com.sekorm.core.vo.supply.WebSearchInputVO">
+	select distinct ps.pn_code from t_partnumber_supply ps 
+	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		AND ps.state = 0
+	  <if test="keyword != null and keyword != ''">
+ 	 	AND UPPER(ps.pn_code) like #{keyword, jdbcType=VARCHAR}
+ 	  </if>
+	</trim>
+ 	limit 0, #{pageSize, jdbcType=INTEGER}
+  </select>
+  
+  <select id="getListPLByInputPL" resultType="java.lang.String"
+   		parameterType="com.sekorm.core.vo.supply.WebSearchInputVO">
+	select distinct st.name  from wms.t_seriestype st
+	inner join wms.t_partnumber pn on pn.series_type_code=st.code and pn.`status` = 0
+	inner join t_partnumber_supply ps on ps.pn_code=pn.pn_code and ps.state = 0
+	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		AND st.`status` = 0 
+	  <if test="keyword != null and keyword != ''">
+ 	 	AND UPPER(st.name) like #{keyword, jdbcType=VARCHAR}
+ 	  </if>
+	</trim>
+ 	limit 0, #{pageSize, jdbcType=INTEGER}
+  </select>
+  
+  <select id="getListPNByInputPN" resultType="java.lang.String"
+   		parameterType="com.sekorm.core.vo.supply.WebSearchInputVO">
+	select distinct t.pn_code
+ 	from t_partnumber_supply t
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			AND t.state = 0
+			<if test="keyword != null and keyword != ''">
+		 	 AND UPPER(t.pn_code) like #{keyword, jdbcType=VARCHAR}
+		 	 AND not exists(
+			 	select pn.pn_code
+			 	from wms.t_partnumber pn
+			 	inner join wms.t_seriestype st on pn.series_type_code=st.code and st.`status`=0
+			 	AND st.`status`=0
+			 	AND UPPER(st.name) like #{keyword, jdbcType=VARCHAR}
+			 	where t.pn_code=pn.pn_code and pn.`status`=0
+			 )
+		 	 </if>
+		</trim>
+	 	limit 0, #{pageSize, jdbcType=INTEGER}
+  </select>
+  
+  <select id="getBrandList" resultType="java.lang.String">
+    select distinct t.brand from t_partnumber_supply t order by t.brand
+  </select>
+  
+  <select id="getPageList" resultMap="VOResultMap" parameterType="com.sekorm.core.vo.supply.BackSearchListVO" >
+    select t.id, t.pn_code, t.pcs, t.delivery_day, t.brand, t.product_line,
+     t.elec, t.elec_branch, t.state, t.update_time,t.batch,t.min_pack_amount,t.min_order_amount,t.erp_update_time
+    from t_partnumber_supply t
+	<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		<if test="record != null and record.id != null">
+			AND t.id = #{record.id,jdbcType=INTEGER}
+		</if>
+		<if test="record != null and record.pnStock != null and record.pnStock == 0">
+			AND (t.pcs is null or t.pcs = 0)
+		</if>
+		<if test="record != null and record.pnStock != null and record.pnStock == 1">
+			AND t.pcs > 0
+		</if>
+		<if test="record != null and record.pnCode != null and record.pnCode != ''">
+			AND UPPER(t.pn_code) like #{record.pnCode,jdbcType=VARCHAR}
+		</if>
+		<if test="record != null and record.brand != null and record.brand != ''">
+			AND UPPER(t.brand) = #{record.brand,jdbcType=VARCHAR}
+		</if>
+		<if test="record != null and record.productLine != null and record.productLine != ''">
+			AND UPPER(t.product_line) like #{record.productLine,jdbcType=VARCHAR}
+		</if>
+		<if test="record != null and record.pcs != null and record.pcs == 0">
+			AND t.pcs &lt;= 0
+		</if>
+		<if test="record != null and record.pcs != null and record.pcs > 0">
+			AND t.pcs &gt; 0
+		</if>
+		<if test="record != null and record.state != null">
+			AND t.state = #{record.state,jdbcType=INTEGER}
+		</if>
+		<if test="record != null and record.updateTimeBegin != null">
+			AND t.erp_update_time &gt;= #{record.updateTimeBegin,jdbcType=TIMESTAMP}
+		</if>
+		<if test="record != null and record.updateTimeEnd != null">
+			AND t.erp_update_time &lt; #{record.updateTimeEnd,jdbcType=TIMESTAMP}
+		</if>
+	</trim>
+    ORDER BY t.update_time desc
+  </select>
+
+
+  
+</mapper>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sekorm.core.dao.supply.InvoiceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.sekorm.core.model.supply.InvoiceInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="mem_id" property="memId" jdbcType="INTEGER" />
+    <result column="order_code" property="orderCode" jdbcType="CHAR" />
+    <result column="invoice_type" property="invoiceType" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="duty_num" property="dutyNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="bank" property="bank" jdbcType="VARCHAR" />
+    <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, order_code, mem_id, invoice_type, company_name, duty_num, address, phone, bank, bank_account, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_invoice_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_invoice_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sekorm.core.model.supply.InvoiceInfo" >
+    insert into t_invoice_info (id, order_code, mem_id, invoice_type, 
+      company_name, duty_num, address, 
+      phone, bank, bank_account, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{orderCode,jdbcType=CHAR}, #{memId,jdbcType=INTEGER}, #{invoiceType,jdbcType=INTEGER}, 
+      #{companyName,jdbcType=VARCHAR}, #{dutyNum,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{bank,jdbcType=VARCHAR}, #{bankAccount,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.sekorm.core.model.supply.InvoiceInfo" >
+    update t_invoice_info
+    <set >
+      <if test="orderCode != null" >
+        order_code = #{orderCode,jdbcType=CHAR},
+      </if>
+      <if test="memId != null" >
+        mem_id = #{memId,jdbcType=INTEGER},
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type = #{invoiceType,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyNum != null" >
+        duty_num = #{dutyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null" >
+        bank = #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        bank_account = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sekorm.core.model.supply.InvoiceInfo" >
+    update t_invoice_info
+    set order_code = #{orderCode,jdbcType=CHAR},
+      mem_id = #{memId,jdbcType=INTEGER},
+      invoice_type = #{invoiceType,jdbcType=INTEGER},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      duty_num = #{dutyNum,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      bank = #{bank,jdbcType=VARCHAR},
+      bank_account = #{bankAccount,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- [以上没有使用] -->
+  
+  
+  <insert id="insertSelective" parameterType="com.sekorm.core.model.supply.InvoiceInfo" >
+    insert into supply.t_invoice_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memId != null" >
+        mem_id,
+      </if>
+      <if test="orderCode != null" >
+        order_code,
+      </if>
+      <if test="invoiceType != null" >
+        invoice_type,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="dutyNum != null" >
+        duty_num,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="bank != null" >
+        bank,
+      </if>
+      <if test="bankAccount != null" >
+        bank_account,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memId != null" >
+        #{memId,jdbcType=INTEGER},
+      </if>
+      <if test="orderCode != null" >
+        #{orderCode,jdbcType=CHAR},
+      </if>
+      <if test="invoiceType != null" >
+        #{invoiceType,jdbcType=INTEGER},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyNum != null" >
+        #{dutyNum,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="bank != null" >
+        #{bank,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectByOrderCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, mem_id, order_code, invoice_type, company_name, ifnull(duty_num,'') duty_num, address, phone, bank, bank_account
+    from supply.t_invoice_info
+    where order_code = #{orderCode,jdbcType=CHAR}
+  </select>
+  
+  <!-- <resultMap id="InvoiceInfoDO" type="com.sekorm.dubbo.beans.isupply.InvoiceInfoDO" >
+    <result column="invoice_peer" property="invoicePeer" jdbcType="CHAR" />
+    <result column="invoice_type" property="invoiceType" jdbcType="INTEGER" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="duty_num" property="dutyNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="bank" property="bank" jdbcType="VARCHAR" />
+    <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getLastOrderInvoiceInfo" resultMap="InvoiceInfoDO">
+    select IFNULL(o.invoice_peer, 0) invoice_peer, IFNULL(i.invoice_type, 0) invoice_type, i.company_name, i.duty_num, 
+    	i.address, i.phone, i.bank, i.bank_account
+    from supply.t_order o 
+    left join supply.t_invoice_info i on i.order_code = o.order_code
+    where o.mem_id = #{memId,jdbcType=CHAR} 
+    ORDER BY o.create_time DESC LIMIT 1
+  </select>
+  <select id="getLastByType" resultMap="InvoiceInfoDO">
+    select o.invoice_peer, IFNULL(i.invoice_type, 0) invoice_type, i.company_name, i.duty_num, 
+    	i.address, i.phone, i.bank, i.bank_account
+    from supply.t_invoice_info i
+    left join supply.t_order o on i.order_code = o.order_code
+    where i.mem_id = #{memId,jdbcType=CHAR} 
+    <if test="invoiceType != null" >
+        AND i.invoice_type = #{invoiceType,jdbcType=INTEGER}
+    </if>
+    ORDER BY i.create_time DESC LIMIT 1
+  </select> -->
+</mapper>

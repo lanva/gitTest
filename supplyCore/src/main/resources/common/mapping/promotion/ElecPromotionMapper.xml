@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sekorm.core.dao.promotion.ElecPromotionMapper" >
+  <resultMap id="BaseResultMap" type="com.sekorm.core.model.promotion.ElecPromotion" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, creator, create_time, file_name, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_elec_promotion
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_elec_promotion
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sekorm.core.model.promotion.ElecPromotion" useGeneratedKeys="true" keyProperty="id">
+    insert into t_elec_promotion (id, creator, create_time, 
+      file_name, status)
+    values (#{id,jdbcType=INTEGER}, #{creator,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{fileName,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sekorm.core.model.promotion.ElecPromotion" useGeneratedKeys="true" keyProperty="id">
+    insert into t_elec_promotion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sekorm.core.model.promotion.ElecPromotion" >
+    update t_elec_promotion
+    <set >
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sekorm.core.model.promotion.ElecPromotion" >
+    update t_elec_promotion
+    set creator = #{creator,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="inactivateAllStock" >
+    update t_elec_promotion t set t.status = 0 where t.status = 1
+  </update>
+  
+  <select id="selectBySelective" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_elec_promotion
+    where 1 = 1
+    <if test="record != null and record.creator != null" >
+      and creator = #{record.creator,jdbcType=INTEGER}
+    </if>
+    <if test="record != null and record.createTime != null" >
+      and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="record != null and record.fileName != null" >
+      and file_name = #{record.fileName,jdbcType=VARCHAR}
+    </if>
+    <if test="record != null and record.status != null" >
+      and status = #{record.status,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

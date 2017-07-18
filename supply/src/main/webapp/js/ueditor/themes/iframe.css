@@ -1,0 +1,34 @@
+/*可以在这里添加你自己的css*/
+body{
+	line-height: 30px;
+	font-family: Microsoft Yahei;
+	font-size: 16px;
+	color: #313131;
+}
+p {
+    margin: 0;
+}
+a,.key-custom {
+	color: #2655a5;
+	text-decoration: none;
+    cursor: pointer;
+    text-decoration: none !important;
+}
+table {
+	table-layout:fixed;
+}
+
+td,th {
+	margin: 0!important;
+	padding: 0!important;
+}
+
+hr.ue-vip-horiz {
+    display: block;
+    margin: 0;
+    padding: 0;
+    height: 12px;
+    border: 1px solid #ff6e03;
+    overflow: hidden;
+    background: url(./default/images/vip-horiz.png) no-repeat 46% 0;
+}

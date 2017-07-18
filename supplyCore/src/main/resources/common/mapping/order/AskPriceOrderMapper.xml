@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sekorm.core.dao.order.AskPriceOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.sekorm.core.model.order.AskPriceOrder">
+        <id property="id" column="id" javaType="Integer" />
+        <result property="orderNo" column="order_no" javaType="String" />
+        <result property="memId" column="mem_id" javaType="Integer" />
+
+        <result property="pnCode" column="pn_code" javaType="String" />
+        <result property="brand" column="brand" javaType="String" />
+        <result property="pcs" column="pcs" javaType="Integer" />
+        <result property="projectDesc" column="project_desc" javaType="String" />
+
+        <result property="contact" column="contact" javaType="String" />
+        <result property="contactPhone" column="contact_phone" javaType="String" />
+        <result property="company" column="company" javaType="String" />
+        <result property="email" column="email" javaType="String" />
+
+        <result property="source" column="source" javaType="Integer" />
+        <result property="processStatus" column="process_status" javaType="Integer" />
+
+        <result property="status" column="status" javaType="Integer" />
+
+        <result property="csId" column="cs_id" javaType="Integer" />
+        <result property="csUname" column="cs_uname" javaType="String" />
+         <result property="csName" column="cs_name" javaType="String" />
+        <result property="csPhone" column="cs_phone" javaType="String" />
+        <result property="csEmail" column="cs_email" javaType="String" />
+
+        <result property="operatorId" column="operator_id" javaType="Integer" />
+        <result property="createTime" column="create_time" javaType="Date" />
+        <result property="updateTime" column="update_time" javaType="Date" />
+
+        <result property="operatorName" column="operator_name" javaType="String" />
+    </resultMap>
+
+    <!--我的询价单分页-->
+    <resultMap id="ApiResultMap" type="com.sekorm.core.vo.supply.AskPriceOrderApiVO">
+
+        <result property="orderNo" column="order_no" javaType="String" />
+        <result property="pnCode" column="pn_code" javaType="String" />
+        <result property="brand" column="brand" javaType="String" />
+        <result property="pcs" column="pcs" javaType="Integer" />
+        <result property="projectDesc" column="project_desc" javaType="String" />
+        <result property="processStatus" column="process_status" javaType="Integer" />
+        <result property="status" column="status" javaType="Integer" />
+
+        <result property="csName" column="cs_name" javaType="String" />
+        <result property="csPhone" column="cs_phone" javaType="String" />
+        <result property="csEmail" column="cs_email" javaType="String" />
+
+        <result property="createTime" column="create_time" javaType="Date" />
+        <result property="updateTime" column="update_time" javaType="Date" />
+
+    </resultMap>
+
+    <!-- 只把必填值写入数据库 会员提交的数据，其他的都属于update-->
+    <insert id="insert">
+        INSERT INTO t_supply_ask_order
+        (order_no, mem_id, pn_code, brand, pcs, project_desc, contact, contact_phone, company,
+         email,`source`,
+         create_time,update_time
+        )
+        VALUES (
+            #{orderNo},#{memId},#{pnCode},#{brand},#{pcs},#{projectDesc},#{contact},#{contactPhone},#{company},
+            #{email},#{source},
+            CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
+
+        )
+    </insert>
+
+
+    <select id="getById" resultMap="BaseResultMap" >
+        SELECT id, order_no, mem_id, pn_code, brand, pcs, project_desc, contact, contact_phone, company, email,
+            `source`, process_status, cs_id, cs_uname,cs_name, cs_phone, cs_email, operator_id, create_time, update_time
+        FROM t_supply_ask_order WHERE id = #{id}
+    </select>
+
+    <select id="getByOrderNo" resultMap="BaseResultMap">
+        SELECT
+            id, order_no, mem_id, pn_code, brand, pcs, project_desc, contact, contact_phone, company, email,
+            `source`, process_status, cs_id,cs_uname, cs_name, cs_phone, cs_email, operator_id, create_time, update_time
+        FROM t_supply_ask_order WHERE order_no = #{orderNo}
+    </select>
+
+    <select id="getListByIds" resultMap="BaseResultMap">
+        SELECT
+        id,mem_id,order_no,pn_code,brand,pcs,project_desc,contact,contact_phone,
+        company,email,`source`,process_status,create_time,update_time,operator_id,cs_id, cs_name,cs_phone,
+        cs_email
+        FROM t_supply_ask_order t WHERE id IN
+        <foreach collection="ids" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getPageListByMemId" resultMap="ApiResultMap" >
+        SELECT order_no,pn_code,brand,pcs,project_desc,process_status,cs_name,cs_phone,cs_email,create_time,update_time FROM t_supply_ask_order WHERE mem_id = #{memId}
+        ORDER BY create_time DESC
+    </select>
+   <!-- 后台按条件查询 -->
+    <select id="getPageListWithCondition" resultMap="BaseResultMap">
+        SELECT
+        o.id,o.mem_id,o.order_no,o.pn_code,o.brand,o.pcs,o.project_desc,o.contact,o.contact_phone,
+        o.company,o.email,o.`source`,o.process_status,o.create_time,o.update_time,o.operator_id,o.cs_id,o.cs_uname, o.cs_name,o.cs_phone,
+        o.cs_email
+        ,u.truename operator_name
+        FROM t_supply_ask_order o
+        LEFT JOIN usm.t_user u ON o.operator_id = u.id
+        LEFT JOIN member.t_member m ON o.mem_id = m.id
+        <trim prefix="WHERE" prefixOverrides="AND" >
+            <if test="conditionVO.firstType != null and  conditionVO.firstValue != null and conditionVO.firstValue !=''" >
+             <!-- 1型号 ， 2 公司名称， 3会员手机号 4询价单号  5操作人 6 客服代表 -->
+
+                <if test="conditionVO.firstType == 1" >
+                   AND UPPER(o.pn_code) LIKE #{conditionVO.firstValue}
+                </if>
+                <if test="conditionVO.firstType == 2" >
+                    AND UPPER(o.company) LIKE #{conditionVO.firstValue}
+                </if>
+                <if test="conditionVO.firstType == 3" >
+                    AND UPPER(m.mobile)  LIKE #{conditionVO.firstValue}
+                </if>
+                <if test="conditionVO.firstType == 4 " >
+                    AND UPPER(o.order_no) LIKE #{conditionVO.firstValue}
+                </if>
+                <if test="conditionVO.firstType == 5" >
+                    AND UPPER(u.truename) LIKE #{conditionVO.firstValue}
+                </if>
+                <if test="conditionVO.firstType == 6" >
+                    AND UPPER(o.cs_name) LIKE #{conditionVO.firstValue}
+                </if>
+            </if>
+            <if test="conditionVO.processStatus != null and conditionVO.processStatus.size() > 0" >
+              AND o.process_status IN
+              <foreach collection="conditionVO.processStatus" open="(" separator="," close=")" index="i" item="pstatus">
+                #{pstatus}
+              </foreach>
+            </if>
+        <!-- 1 提交时间， 2 操作时间 -->
+        <if test="conditionVO.dateType != null" >
+            <if test="conditionVO.dateType == 1" >
+                <if test="conditionVO.startDate != null">
+                    AND o.create_time &gt;= #{conditionVO.startDate,jdbcType=TIMESTAMP}
+                </if>
+                <if test="conditionVO.endDate != null">
+                    AND o.create_time &lt; #{conditionVO.endDate,jdbcType=TIMESTAMP}
+                </if>
+            </if>
+            <if test="conditionVO.dateType == 2" >
+                <if test="conditionVO.startDate != null">
+                    AND o.update_time &gt;= #{conditionVO.startDate,jdbcType=TIMESTAMP}
+                </if>
+                <if test="conditionVO.endDate != null">
+                    AND o.update_time &lt; #{conditionVO.endDate,jdbcType=TIMESTAMP}
+                </if>
+            </if>
+        </if>
+        <if test="conditionVO.brand != null and conditionVO.brand !=''">
+            AND o.brand = #{conditionVO.brand}
+        </if>
+
+    </trim>
+ORDER BY o.create_time DESC
+</select>
+    <!-- 获取某个会员的订单总数-->
+    <select id="getCountOfOrderByMemId" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  t_supply_ask_order WHERE mem_id =#{memId}
+        <if test="status !=null">
+            AND status = #{status}
+        </if>
+    </select>
+	<select id="getAskOrderStatusByMemId" resultType="java.util.Map">
+	select t.id,CONCAT(t.pn_code,(case t.process_status when 3 then '已报价' when 4 then '不报价' end)) as title,
+		t.order_no as order_no,t.update_time as create_time from supply.t_supply_ask_order t where t.process_status in(3,4) and t.mem_id=#{memId} 
+		<if test="requestTime != null">
+			and t.update_time &gt;= #{requestTime}
+		</if>
+	</select>
+
+    <update id="update" >
+	UPDATE t_supply_ask_order t
+	SET t.company=#{company},t.email=#{email},
+	    t.cs_id=#{csId},t.cs_uname=#{csUname},t.cs_name=#{csName},t.cs_phone =#{csPhone},t.cs_email=#{csEmail},
+	    t.process_status=#{processStatus},
+	    t.operator_id =#{operatorId},t.update_time = CURRENT_TIMESTAMP
+	WHERE id = #{id}
+	</update>
+<!-- ,t.email=#{email},
+t.cs_id=#{csId},t.cs_name=#{csName},t.cs_phone =#{csPhone},t.cs_email=#{csEmail},
+t.status=#{status}-->
+</mapper>
